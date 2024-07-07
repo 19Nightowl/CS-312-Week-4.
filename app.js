@@ -11,7 +11,7 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-mongoose.connect("mongodb://localhost:27017/todolistDB", {userNewUrlParser: true});
+mongoose.connect("mongodb://localhost:27017/todolistDB");
 
 const itemsSchema = {
   name: String
@@ -33,13 +33,7 @@ const item3 = new Item({
 
 const defaultItems = [item1, item2, item3];
 
-Item.insertMany(defaultItems, function(err){
-  if(err){
-    console.log(err);
-  } else {
-    console.log("Success!")
-  }
-});
+Item.insertMany(defaultItems);
 
 app.get("/", function(req, res) {
   res.render("list", {listTitle: "Today", newListItems: items});
@@ -67,6 +61,6 @@ app.get("/about", function(req, res){
   res.render("about");
 });
 
-app.listen(3000, function() {
-  console.log("Server started on port 3000");
+app.listen(process.env.PORT || 3000, function() {
+  console.log("Server started");
 });
